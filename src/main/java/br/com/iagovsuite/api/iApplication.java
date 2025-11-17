@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IaGovSuiteApiApplication {
+public class iApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(IaGovSuiteApiApplication.class, args);
+		SpringApplication.run(iApplication.class, args);
 	}
 
 }

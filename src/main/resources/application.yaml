@@ -1,3 +1,48 @@
 spring:
   application:
     name: ia-gov-suite-api
+
+  servlet:
+    multipart:
+      max-file-size: 20MB # Define limite de 20MB para upload
+      max-request-size: 20MB
+
+  thymeleaf:
+    cache: false
+    prefix: "classpath:/templates/"
+    suffix: .html
+    mode: HTML
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/iagov_db
+    username: iagov_user
+    password: iagov_pass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    locations: classpath:db/migration
+    enabled: true
+    baseline-on-migrate: true
+
+server:
+  port: 8080
+
+api:
+  security:
+    jwt:
+      secret: "seu-segredo-super-secreto-para-jwt-aqui"
+      issuer: "ia-gov-suite-api"
+      expiration-hours: 2
+
+file:
+  storage:
+    location: "./uploads"
