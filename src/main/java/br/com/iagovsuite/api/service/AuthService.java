@@ -1,11 +1,17 @@
 package br.com.iagovsuite.api.service;
 
+import br.com.iagovsuite.api.config.security.TokenService;
+import br.com.iagovsuite.api.controller.auth.dto.LoginDto;
 import br.com.iagovsuite.api.controller.auth.dto.RegisterDto;
+import br.com.iagovsuite.api.controller.auth.dto.TokenDto;
 import br.com.iagovsuite.api.domain.user.User;
 import br.com.iagovsuite.api.domain.user.UserRole;
 import br.com.iagovsuite.api.domain.user.UserRepository;
 import br.com.iagovsuite.api.exception.EmailAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +24,12 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Transactional
     public User registerUser(RegisterDto registerDto) {
@@ -37,4 +49,14 @@ public class AuthService {
         return userRepository.save(newUser);
     }
 
+
+    public TokenDto login(LoginDto data) {
+        UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
+        Authentication auth = this.authenticationManager.authenticate(usernamePassword);
+
+        User user = (User) auth.getPrincipal();
+        String token = tokenService.generateToken(user);
+
+        return new TokenDto(token);
+    }
 }

@@ -46,3 +46,9 @@ api:
 file:
   storage:
     location: "./uploads"
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs

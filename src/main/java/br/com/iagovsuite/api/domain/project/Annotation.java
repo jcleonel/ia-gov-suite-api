@@ -20,12 +20,12 @@ import java.util.UUID;
 public class Annotation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "risk_level", nullable = false, columnDefinition = "risk_level")
+    @Column(name = "risk_level", nullable = false, length = 50)
     private RiskLevel riskLevel;
 
     @Column(name = "selected_text", columnDefinition = "TEXT")

@@ -1,5 +1,3 @@
-CREATE TYPE risk_level AS ENUM ('LOW', 'MEDIUM', 'HIGH');
-
 CREATE TABLE analysis_project (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title VARCHAR(255) NOT NULL,
@@ -32,7 +30,7 @@ CREATE TABLE document_file (
 CREATE TABLE annotation (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     analysis_project_id UUID NOT NULL,
-    risk_level risk_level NOT NULL,
+    risk_level VARCHAR(50)  NOT NULL,
     selected_text TEXT,
     recommendation TEXT NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

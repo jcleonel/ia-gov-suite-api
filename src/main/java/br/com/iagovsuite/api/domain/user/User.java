@@ -3,7 +3,9 @@ package br.com.iagovsuite.api.domain.user;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +25,7 @@ import java.util.UUID;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     private UUID id;
 
@@ -40,7 +42,7 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "\"role\"", nullable = false, columnDefinition = "user_role")
+    @Column(name = "role", nullable = false, length = 50)
     private UserRole role;
 
     @CreationTimestamp
@@ -53,7 +55,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        if (this.role == UserRole.ROLE_ADMIN) {
+            return List.of(
+                    new SimpleGrantedAuthority(UserRole.ROLE_ADMIN.name()),
+                    new SimpleGrantedAuthority(UserRole.ROLE_USER.name())
+            );
+        }
+        return List.of(new SimpleGrantedAuthority(UserRole.ROLE_USER.name()));
     }
 
     @Override
