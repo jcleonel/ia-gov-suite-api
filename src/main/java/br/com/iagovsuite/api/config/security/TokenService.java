@@ -32,6 +32,8 @@ public class TokenService {
                     .withSubject(user.getEmail())
                     .withClaim("userId", user.getId().toString())
                     .withClaim("role", user.getRole().name())
+                    .withClaim("firstName", user.getFirstName())
+                    .withClaim("lastName", user.getLastName())
                     .withExpiresAt(getExpirationInstant())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {

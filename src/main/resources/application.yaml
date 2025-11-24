@@ -52,3 +52,13 @@ springdoc:
     path: /swagger-ui.html
   api-docs:
     path: /v3/api-docs
+
+logging:
+  level:
+    root: INFO
+    br.com.iagovsuite: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG

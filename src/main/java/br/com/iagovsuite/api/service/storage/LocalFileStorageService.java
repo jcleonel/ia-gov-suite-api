@@ -24,7 +24,7 @@ public class LocalFileStorageService implements FileStorageService {
     private final Path rootLocation;
 
     public LocalFileStorageService(@Value("${file.storage.location}") String storageLocation) {
-        this.rootLocation = Paths.get(storageLocation);
+        this.rootLocation = Paths.get(storageLocation).toAbsolutePath().normalize();
     }
 
     @PostConstruct
@@ -43,14 +43,21 @@ public class LocalFileStorageService implements FileStorageService {
         }
 
         String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+
+        if(originalFilename.contains("..")) {
+            throw new FileStorageException("Não é possível armazenar arquivo com caminho relativo fora do diretório atual " + originalFilename);
+        }
+
         String fileExtension = StringUtils.getFilenameExtension(originalFilename);
-        String storageKey = UUID.randomUUID() + "." + fileExtension; // Cria um nome único
+        String storageKey = UUID.randomUUID() + "." + fileExtension;
 
         try (InputStream inputStream = file.getInputStream()) {
             Path destinationFile = this.rootLocation.resolve(storageKey).normalize().toAbsolutePath();
-            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
+
+            if (!destinationFile.getParent().equals(this.rootLocation)) {
                 throw new FileStorageException("Não é possível salvar o arquivo fora do diretório raiz.");
             }
+
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
             return storageKey;
         } catch (IOException e) {
