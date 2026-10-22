@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+aws:
+  s3:
+    bucket: ${AWS_BUCKET_NAME}
+  region:
+    static: us-east-1
+
+logging:
+  level:
+    br.com.iagovsuite: INFO

@@ -2,6 +2,9 @@ spring:
   application:
     name: ia-gov-suite-api
 
+  profiles:
+    active: dev
+
   servlet:
     multipart:
       max-file-size: 20MB # Define limite de 20MB para upload

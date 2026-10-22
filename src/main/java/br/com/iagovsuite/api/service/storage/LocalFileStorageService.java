@@ -3,6 +3,7 @@ package br.com.iagovsuite.api.service.storage;
 import br.com.iagovsuite.api.exception.FileStorageException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
+@Profile("dev")
 public class LocalFileStorageService implements FileStorageService {
 
     private final Path rootLocation;
